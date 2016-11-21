@@ -1,5 +1,6 @@
 ### Local probs ###
-data/
+data/positive
+data/negative
 
 # Created by https://www.gitignore.io/api/python,pycharm,sublimetext,windows
 
