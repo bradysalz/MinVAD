@@ -8,12 +8,14 @@ Created on Mon Nov 21 17:16:04 2016
 """
 
 import os
+import shutil
 from subprocess import Popen, PIPE
 
-DIR = r'C:\Users\brady\Downloads\an4\wav\an4_clstk'
+DIR = r'C:\Users\brady\GitHub\MinVAD\data\positive\an4_clstk'
 
 os.chdir(DIR)
 
+#%% Changing raw PCM to WAV
 for folder in os.listdir():
     os.chdir(folder)
     print("Entering folder ", folder)
@@ -28,6 +30,17 @@ for folder in os.listdir():
                     '-i', file,
                     base + '.wav']
             p = Popen(args, stdin=PIPE, stderr=PIPE)
+            os.remove(file)
     os.chdir('..')
 
 print("finished")
+
+#%% Moving all WAV to top level dir
+for folder in os.listdir():
+    os.chdir(folder)
+    print("Entering ", folder)
+    for file in os.listdir():
+        shutil.copy(file, '../' + file)
+
+    os.chdir('..')        
+    
