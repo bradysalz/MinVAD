@@ -1,14 +1,21 @@
 # -*- coding: utf-8 -*-
 """
+Helper/utility functions for the feature extractor
+
 Created on Mon Nov 21 12:40:05 2016
 
 @author: brady
 """
 
+import os
+import random
 import numpy as np
+import wavio
 
+from config import POS_DIRS, NEG_DIRS
 from numpy import pi
 from scipy import signal
+
 
 def getFrameSize(fs, timeSize=20):
     """
@@ -59,3 +66,44 @@ def stereoToMono(audio):
     Averages two channels to create mono signal
     """
     return (audio[:,0] + audio[:,1])/2
+
+
+def normalizeAudio(audio, width):
+    """
+    Returns audio file that with range +/-1
+    :param audio: numpy array of audio samples
+    :param width: sample width in bytes (1 = 8 bit, 2 = 16 bit...)
+    :returns: noramlized audio file
+    """
+    max_val = 2**(8*width-1)
+    return audio/max_val
+
+
+def loadRandomFile(audio_class):
+    """
+    Reads and returns random .WAV file from appropriate class
+    :param audio_class: 1 if positive example, 0 if negative example
+    :returns: filename, sampling rate, numpy array
+    """    
+
+    if audio_class == 1:
+        use_dirs = POS_DIRS
+    else:
+        use_dirs = NEG_DIRS
+
+    os.chdir(random.choice(use_dirs))
+    
+    if audio_class == 0:
+        os.chdir(random.choice(os.listdir()))
+        
+    file = random.choice(os.listdir())
+    mWav = wavio.read(file)
+    
+    if mWav.data.shape[1] == 2:
+        mWav.data = stereoToMono(mWav.data)
+        
+    mWav.data = normalizeAudio(mWav.Data, mWav.sampwidth)
+    
+    return [file, mWav.rate, mWav.data]
+    
+        
