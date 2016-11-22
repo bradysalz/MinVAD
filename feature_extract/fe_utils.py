@@ -59,7 +59,8 @@ def aboveFrameThreshold(frame_avgs):
     :param frame_avgs: np-array of average of filtered audio frame
     :returns: 1 if any frame is above threshold, else 0
     """
-    return 1 if np.sum([f > 250 for f in frame_avgs]) > 0 else 0
+    return 1 if np.sum([f > 0.015 for f in frame_avgs]) > 0 else 0
+    
     
 def stereoToMono(audio):
     """
@@ -102,7 +103,7 @@ def loadRandomFile(audio_class):
     if mWav.data.shape[1] == 2:
         mWav.data = stereoToMono(mWav.data)
         
-    mWav.data = normalizeAudio(mWav.Data, mWav.sampwidth)
+    mWav.data = normalizeAudio(mWav.data, mWav.sampwidth)
     
     return [file, mWav.rate, mWav.data]
     
