@@ -1,6 +1,6 @@
-### Local probs ###
-data/positive
-data/negative
+### Local Data ###
+data/train
+data/test
 
 # Created by https://www.gitignore.io/api/python,pycharm,sublimetext,windows
 
