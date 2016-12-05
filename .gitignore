@@ -1,6 +1,7 @@
 ### Local Data ###
 data/train
 data/test
+*.npy
 
 # Created by https://www.gitignore.io/api/python,pycharm,sublimetext,windows
 

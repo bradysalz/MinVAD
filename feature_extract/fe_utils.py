@@ -11,6 +11,7 @@ import os
 import random
 import numpy as np
 import wavio
+import soundfile as sf
 
 from config import POS_DIRS, NEG_DIRS
 from numpy import pi
@@ -53,13 +54,14 @@ def calcFrameAvg(frame):
     return np.sqrt(np.mean(frame**2))
 
 
-def aboveFrameThreshold(frame_avgs):
+def aboveFrameThreshold(frame):
     """
     Checks for silence in a single frame
-    :param frame_avgs: np-array of average of filtered audio frame
-    :returns: 1 if any frame is above threshold, else 0
+    Should only use on "clean" files (voice only)
+    :param frame: audio frame (length timeSize)
+    :returns: 1 if frame is above threshold, else 0
     """
-    return 1 if np.sum([f > 0.015 for f in frame_avgs]) > 0 else 0
+    return 1 if np.mean(frame**2) > 0.0025 else 0
     
     
 def stereoToMono(audio):
@@ -80,10 +82,11 @@ def normalizeAudio(audio, width):
     return audio/max_val
 
 
-def loadRandomFile(audio_class):
+def loadRandomFile(audio_class, used_file_list):
     """
     Reads and returns random .WAV file from appropriate class
     :param audio_class: 1 if positive example, 0 if negative example
+    :param used_file_list: lists of files already in the dataset
     :returns: filename, sampling rate, numpy array
     """    
 
@@ -92,19 +95,34 @@ def loadRandomFile(audio_class):
     else:
         use_dirs = NEG_DIRS
 
-    os.chdir(random.choice(use_dirs))
+    folder = random.choice(use_dirs)
+    os.chdir(folder)
     
     if audio_class == 0:
         os.chdir(random.choice(os.listdir()))
         
     file = random.choice(os.listdir())
-    mWav = wavio.read(file)
+    cnt = 0
+    while file in used_file_list or not file.endswith('wav'):
+        file = random.choice(os.listdir())
+        cnt += 1
+        print('In {}, still looking - {}'.format(folder, cnt))
     
-    if mWav.data.shape[1] == 2:
-        mWav.data = stereoToMono(mWav.data)
+    try:
+        mWav = wavio.read(file)
+    
+        if mWav.data.shape[1] == 2:
+            mWav.data = stereoToMono(mWav.data)        
+    
+        mWav.data = normalizeAudio(mWav.data, mWav.sampwidth)
+        data = mWav.data
+        rate = mWav.rate
         
-    mWav.data = normalizeAudio(mWav.data, mWav.sampwidth)
-    
-    return [file, mWav.rate, mWav.data]
+    except:
+        data, rate = sf.read(file, dtype='int16')
+        if np.max(data) > 1:
+            data = data/2.**15
+        
+    return (file, rate, data)
     
         
