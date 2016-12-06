@@ -40,7 +40,7 @@ for file in os.listdir():
         else:
             chunk = mWav.data[idx*frame_len : (idx+1)*frame_len]
             
-        if (np.mean(chunk) > 0.0025):
+        if aboveFrameThreshold(chunk):
             class_list.append(1)
         else:
             class_list.append(0)
