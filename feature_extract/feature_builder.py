@@ -7,17 +7,16 @@ Created on Mon Nov 21 14:20:14 2016
 @author: brady
 """
 
-%load_ext autoreload
-%autoreload 2
+#%load_ext autoreload
+#%autoreload 2
 
 #%%
 import os
 import numpy as np
-import random
 import scipy.signal
 
-from config import *
-from fe_utils import *
+from .config import *
+from .fe_utils import *
 
 
 #%% Init file structure
@@ -80,11 +79,12 @@ while (cnt < n_samples):
 n_samples = 30e3
 cnt = 0
 done = 0
+
+filt_bank = [createFilter(f_center[n], Q, fs) for n in range(n_filt)]
+
 while (cnt < n_samples):
     # load a random positive sample file
     file, fs, data = loadRandomFile(NEG, audio_file)
-
-    filt_bank = [createFilter(f_center[n], Q, fs) for n in range(n_filt)]
     
     # process a single frame
     frame_len = getFrameSize(fs)

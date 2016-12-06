@@ -61,7 +61,7 @@ def aboveFrameThreshold(frame):
     :param frame: audio frame (length timeSize)
     :returns: 1 if frame is above threshold, else 0
     """
-    return 1 if np.mean(frame**2) > 0.0025 else 0
+    return 1 if np.mean(frame**2) > 0.0001 else 0
     
     
 def stereoToMono(audio):
