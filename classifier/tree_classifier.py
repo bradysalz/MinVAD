@@ -5,10 +5,6 @@ Created on Mon Nov 21 21:38:57 2016
 @author: brady
 """
 
-%load_ext autoreload
-%autoreload 2
-#%%
-
 import os
 import numpy as np
 import matplotlib.pyplot as plt
@@ -23,7 +19,7 @@ data_dir = r'C:\Users\brady\GitHub\MinVAD\feature_extract'
 tr_data = np.load(os.path.join(data_dir, 'train_130k.npy'))
 tr_class = np.load(os.path.join(data_dir, 'train_130k_class.npy'))
 
-X_train, X_test, y_train, y_test = train_test_split(tr_data, tr_class, test_size=0.5)
+X_train, X_test, y_train, y_test = train_test_split(tr_data, tr_class, test_size=0.9)
 
 cutoff = int(np.floor(0.8 * len(tr_class)))
 clf = tree.DecisionTreeClassifier(max_depth = 5)
@@ -43,9 +39,9 @@ for tf in tree_funcs:
     prec.append(int(tf.__name__[5:-1]))
     print(tf, prec[-1])
     pred = get_tree_results(tf, X_test)
-    print(accuracy_score(y_test, pred)-np.sum(np.equal(y_test, pred))/len(y_test))
+    print(accuracy_score(y_test, pred)+0.01-np.sum(np.equal(y_test, pred))/len(y_test))
     scores.append(accuracy_score(y_test, pred))
-    #print(confusion_matrix(y_test, pred), scores[-1])
+    print(confusion_matrix(y_test, pred), scores[-1])
 
     
 prec = np.array(prec)

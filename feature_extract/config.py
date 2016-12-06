@@ -4,7 +4,7 @@ Created on Mon Nov 21 18:51:11 2016
 
 @author: brady
 """
-
+#################### TRAINING ####################
 # POS DIRS
 TRAIN_CLEAN = r'C:\Users\brady\GitHub\MinVAD\data\train\positive\clean'
 TRAIN_0DB = r'C:\Users\brady\GitHub\MinVAD\data\train\positive\0db'
@@ -26,3 +26,12 @@ TRAIN_LABELS = r'C:\Users\brady\GitHub\MinVAD\data\train\positive\clean'
 
 POS_DIRS = [TRAIN_ALLDB, TRAIN_MSAK, TRAIN_FSEW]
 NEG_DIRS = [TRAIN_KITCHEN, TRAIN_URBAN]
+
+
+#################### TESTING ####################
+TEST_0DB = r'C:\Users\brady\GitHub\MinVAD\data\test\positive\0db'
+TEST_5DB = r'C:\Users\brady\GitHub\MinVAD\data\test\positive\5db'
+TEST_10DB = r'C:\Users\brady\GitHub\MinVAD\data\test\positive\10db'
+TEST_15DB = r'C:\Users\brady\GitHub\MinVAD\data\test\positive\15db'
+
+TEST_DIRS = [TEST_0DB, TEST_5DB, TEST_10DB, TEST_15DB]
