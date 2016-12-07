@@ -26,7 +26,7 @@ def getFrameSize(fs, timeSize=20):
     :param timeSize: frame length in milliseconds (default: 20ms)
     :returns: number of samples per frame
     """
-    return fs*timeSize/1000
+    return int(fs*timeSize/1000)
     
     
 def createFilter(fc, Q, fs):
@@ -61,7 +61,7 @@ def aboveFrameThreshold(frame):
     :param frame: audio frame (length timeSize)
     :returns: 1 if frame is above threshold, else 0
     """
-    return 1 if np.mean(frame**2) > 0.0001 else 0
+    return 1 if np.mean(frame**2) > 0.0002 else 0
     
     
 def stereoToMono(audio):
@@ -108,6 +108,7 @@ def loadRandomFile(audio_class, used_file_list):
         cnt += 1
         print('In {}, still looking - {}'.format(folder, cnt))
     
+    #print(file)
     try:
         mWav = wavio.read(file)
     
