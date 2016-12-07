@@ -3,7 +3,7 @@ data/train
 data/test
 *.npy
 .idea/
-
+classifer/quant_*
 # Created by https://www.gitignore.io/api/python,pycharm,sublimetext,windows
 
 ### Python ###
