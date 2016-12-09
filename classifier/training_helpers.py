@@ -92,7 +92,7 @@ def get_tree_results(tree, Xtest):
     :returns: predicted results
     """
     results = [tree(X) for X in Xtest]
-    return np.array([results]).T
+    return np.array([results], ndmin=1).T
     
     
 if __name__ == '__main__':    

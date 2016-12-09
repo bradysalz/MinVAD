@@ -12,7 +12,6 @@ Created on Sun Dec  4 15:37:11 2016
 
 import os
 import wavio
-import numpy as np
 
 from fe_utils import *
 from config import TRAIN_CLEAN

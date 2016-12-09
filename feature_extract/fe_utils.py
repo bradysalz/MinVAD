@@ -13,7 +13,7 @@ import numpy as np
 import wavio
 import soundfile as sf
 
-from config import POS_DIRS, NEG_DIRS
+from .config import POS_DIRS, NEG_DIRS
 from numpy import pi
 from scipy import signal
 
@@ -96,19 +96,27 @@ def loadRandomFile(audio_class, used_file_list):
         use_dirs = NEG_DIRS
 
     folder = random.choice(use_dirs)
-    os.chdir(folder)
     
     if audio_class == 0:
-        os.chdir(random.choice(os.listdir()))
+        sub_folder = random.choice(os.listdir(folder))
+        folder = os.path.join(folder, sub_folder)
         
-    file = random.choice(os.listdir())
+    file = random.choice(os.listdir(folder))
     cnt = 0
     while file in used_file_list or not file.endswith('wav'):
         file = random.choice(os.listdir())
         cnt += 1
         print('In {}, still looking - {}'.format(folder, cnt))
     
-    #print(file)
+    return parse_file(os.path.join(folder, file))
+    
+    
+def parse_file(file):
+    """
+    Read an audio file and return the data inside it
+    :param file: fullpath to file
+    :returns: filename, sampling rate, np-array of data
+    """
     try:
         mWav = wavio.read(file)
     
@@ -120,6 +128,7 @@ def loadRandomFile(audio_class, used_file_list):
         rate = mWav.rate
         
     except:
+        print(file)
         data, rate = sf.read(file, dtype='int16')
         if np.max(data) > 1:
             data = data/2.**15

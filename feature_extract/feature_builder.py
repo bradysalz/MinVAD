@@ -38,13 +38,12 @@ def build_features(data_class, n_samples=50e3, f_start=100, f_stop=4e3,
         # load a random positive sample file
         file, fs, data = fe.loadRandomFile(data_class, exclusion_list)
 
-        if data_class:
+        if data_class and file.startswith('sp'):
             # preload positive trained data classes
-            if file.startswith('sp'):
-                fpath = os.path.join(TRAIN_LABELS, file[0:4])
-                with open(fpath + '.csv', 'r') as f:
-                    classes_str = f.readline()
-                    classes = [int (c) for c in classes_str.split(',')]
+            fpath = os.path.join(TRAIN_LABELS, file[0:4])
+            with open(fpath + '.csv', 'r') as f:
+                classes_str = f.readline()
+                classes = [int (c) for c in classes_str.split(',')]
 
 
         # this is inefficient but without knowing sampling rate 
